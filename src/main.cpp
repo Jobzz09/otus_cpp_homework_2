@@ -1,8 +1,4 @@
-#include <iostream>
-#include <string>
-#include <math.h>
-#include <fstream>
-#include <vector>
+#include "common.h"
 
 
 std::vector<std::string> split(const std::string &str, char d)
@@ -24,24 +20,16 @@ std::vector<std::string> split(const std::string &str, char d)
         return r;
 }
 
-auto getUlongValueOfIpv4(std::vector<std::string> input) {
-    int i = 4;
-    unsigned long long result = 0;
-    
-    for (auto elem = input.begin(); elem != input.end(); ++elem, --i) {
-        result += std::stoi(*elem) * pow(255, i);
-    }
-    return result;
-}
+
 int main() {
     try {
         std::vector<std::vector<std::string>> ip_pool;
         std::vector<unsigned long long> ull_ip_pool;
 
-        std::ifstream fin("ip_filter.tsv");
-
-        for (std::string line; std::getline(fin, line);)
+        for (std::string line; std::getline(std::cin, line);)
         {
+            if (line.empty())
+                break;
             std::vector<std::string> tmp_v = split(line, '\t');
             ip_pool.push_back(split(tmp_v.at(0), '.'));
         }
@@ -100,7 +88,7 @@ int main() {
         }
        
         for (auto elem : ip_pool) {
-            if (std::find(elem.begin(), elem.end(), "46") != elem.end()) {
+            if (std::find(elem.begin(), elem.end(), std::string("46")) != elem.end() ) {
                 std::string result;
                 for (auto it = elem.begin(); it != elem.end(); it++) {
                     result += *it + '.';
